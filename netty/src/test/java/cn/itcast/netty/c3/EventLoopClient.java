@@ -6,6 +6,7 @@ package cn.itcast.netty.c3;
 */
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -16,7 +17,7 @@ import java.net.InetSocketAddress;
 public class EventLoopClient {
     public static void main(String[] args) throws InterruptedException {
         // 1. 启动类
-        new Bootstrap()
+        Channel channel = new Bootstrap()
                 // 2. 添加 EventLoop，接收服务器的数据、处理
                 .group(new NioEventLoopGroup())
                 // 3. 选择客户端 channel 实现
@@ -33,8 +34,8 @@ public class EventLoopClient {
                 .connect(new InetSocketAddress("localhost", 8080))
                 // Netty 中很多方法都是异步的，如 connect，这时需要使用 sync 方法等待 connect 建立连接完毕
                 .sync()
-                .channel()
-                // 6. 向服务器发送数据
-                .writeAndFlush("hello, world");
+                .channel();
+        System.out.println(channel);
+        System.out.println("");
     }
 }
