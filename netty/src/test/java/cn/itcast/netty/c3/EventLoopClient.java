@@ -1,4 +1,4 @@
-package cn.itcast.netty.c1;
+package cn.itcast.netty.c3;
 
 /*
 @author YG
@@ -13,7 +13,7 @@ import io.netty.handler.codec.string.StringEncoder;
 
 import java.net.InetSocketAddress;
 
-public class HelloClient {
+public class EventLoopClient {
     public static void main(String[] args) throws InterruptedException {
         // 1. 启动类
         new Bootstrap()
