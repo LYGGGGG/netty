@@ -6,37 +6,34 @@ package cn.itcast.netty.c3;
 */
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringEncoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.Date;
 
-public class EventLoopClient {
+@Slf4j
+public class EventLoopClient_02 {
     public static void main(String[] args) throws InterruptedException {
-        // 1. 启动类
-        new Bootstrap()
-                // 2. 添加 EventLoop，接收服务器的数据、处理
+        ChannelFuture channelFuture = new Bootstrap()
                 .group(new NioEventLoopGroup())
-                // 3. 选择客户端 channel 实现
                 .channel(NioSocketChannel.class)
-                // 4. 添加处理器
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override // 在连接建立后，初始化
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        // 添加编码器
                         ch.pipeline().addLast(new StringEncoder());
                     }
                 })
-                // 5. 连接到服务器
-                .connect(new InetSocketAddress("localhost", 8080))
-                // Netty 中很多方法都是异步的，如 connect，这时需要使用 sync 方法等待 connect 建立连接完毕
-                // sync意思是让代码等待 所有线程都运行完毕了再向下执行
-                .sync()
-                .channel()
-                // 6. 向服务器发送数据
-                .writeAndFlush("hello,world!!");
+                .connect(new InetSocketAddress("localhost", 8080));
+//        channelFuture.sync();
+        Channel channel = channelFuture.channel();
+        log.debug("{}", channel);
+        channel.writeAndFlush(new Date() + ": hello,world!!");
 
     }
 }
