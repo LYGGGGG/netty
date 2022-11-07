@@ -1,4 +1,4 @@
-package cn.netty.c1;
+package cn.itcast.netty.c1;
 
 /*
 @author YG
